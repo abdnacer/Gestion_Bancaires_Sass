@@ -12,7 +12,7 @@ compt client[100];
 
 int i = 0;
 int nombres;
-int cased = 0;
+// int cased = 0;
 
 void Deposer();
 void retirer();
@@ -20,7 +20,7 @@ void Ascendent();
 void Descendant();
 void AscendentChiffres();
 void DescendantChiffres();
-void fedilisation(compt client[], int nombres);
+void fedilisation();
 
 void affichage(){
   for(i = 0; i < nombres; i++){
@@ -91,25 +91,26 @@ int main(){
           system("cls");
           printf("\n\t\t\t\t ============== #Creation Succes# =============\n\n\n");
           goto Menu;
-          break;
         }
 
         case 3:{
           
           int specifier;
           Specification :
-          printf("\t\t\tSi vous souhaitez retirer des fonds, entrez le code 1 \n\n");
-          printf("\t\t\tSi vous voulez payer de l'argent, entrez le code 2 \n\n");
-          printf("\t\t\tQuiter, Entrer le code 3 \n\n");
+          printf("\t\t\tSi Vous Souhaitez Retirer L argent, Entrez Le Code 1 \n\n");
+          printf("\t\t\tSi Vous Souhaitez Deposer L argent, entrez le code 2 \n\n");
+          printf("\t\t\tPour Quiter, Entrer le code 3 \n\n");
           printf("\t\t\tChoisissez Le Bon Choix Pour Vous : ");
           scanf("%d", &specifier);
           switch(specifier){
             case 1 :{
+                    system("cls");
                     retirer();
                     goto Menu;
                     break;
             }
             case 2 :{ 
+                    system("cls");
                     Deposer();
                     goto Menu;
                     break;
@@ -134,37 +135,53 @@ int main(){
             Affichage :
             printf("\tPour Ordre Ascendant, Entrer Le Code 1 \n\n");
             printf("\tPour Ordre Descendant, Entrer Le Code 2 \n\n");
-            printf("\tPour Ordre Ascendant les Comptes bancaires ayant un montant supérieur à un chiffre introduit, Entrer Le Code 3 \n\n");
-            printf("\tPour Ordre Descendant les comptes bancaires ayant un montant supérieur à un chiffre introduit, Entrer Le Code 4 \n\n");
+            printf("\tPour Ordre Ascendant les Comptes bancaires ayant un montant superieur a un chiffre introduit, Entrer Le Code 3 \n\n");
+            printf("\tPour Ordre Descendant les comptes bancaires ayant un montant superieur a un chiffre introduit, Entrer Le Code 4 \n\n");
+            printf("\tPour Rechrche Par CIN, Entrer Le Code 5 \n\n");
             printf("\tSi Vous Souhaitez Quitter Ce Service, Entrer Le Code 6 \n\n");
             printf("\tChoisissez Le Bon Choix Pour Vous : ");
             scanf("%d", &choix);
             switch(choix){
               case 1:{
-                Ascendent();
                 system("cls");
-                affichage();
+                Ascendent();
                 goto Menu;
                 break;
               }
               case 2 : {
-                Descendant();
                 system("cls");
-                affichage();
+                Descendant();
                 goto Menu;
                 break;
               }
               case 3 :{
-                system("cls");
                 AscendentChiffres();
                 goto Menu;
                 break;
               }
               case 4 :{
-                system("cls");
                 DescendantChiffres();
                 goto Menu;
                 break;
+              }
+              case 5 :{
+                system("cls");
+                char cin[20];
+                int i;
+                int index = i;
+                route :
+                printf("\n\t\t\t Entre Votre CIN : ");
+                scanf("%s",&cin); 
+
+                for(i = 0; i < index; i++){
+                  if((strcmp(cin , client[i].cin)) == 0){
+                  printf("\n\t\t ======= Vous Avez Un Compte En Banque ======= \n\n");
+                  goto Menu;
+                  }
+                }
+                    printf("\n\t\t\t ======= Vous N Avez Un Compte En Banque ======= \n\n");
+                    goto Menu;
+                    break;  
               }
               default :{
                 system("cls");
@@ -177,7 +194,8 @@ int main(){
         }
 
         case 5 :{
-            fedilisation(client,nombres);
+            system("cls");
+            fedilisation();
             goto Menu;
             break;
         }
@@ -201,12 +219,12 @@ int main(){
     /* ----------- Deposer Les Payements ----------- */
     void Deposer(){
     float solde;
-    char cin_user[7];
+    char cin_user[20];
     int i;
     int index = i;
 
-    printf("\n\t\t\t Entre Votre CIN : ");
     N:
+    printf("\n\t\t\t Entre Votre CIN : ");
     scanf("%s",&cin_user);
     for(i = 0; i < index; i++){
 
@@ -279,6 +297,8 @@ void Ascendent(){
         client[i] = client[j];
         client[j]= temporaire;
       }
+
+      affichage();
 }
 
 /* ----------- Trier A Descendant ----------- */
@@ -292,13 +312,16 @@ void Descendant(){
             client[i] = client[j];
             client[j]= temporaire;
           }
+
+          affichage();
 }
 
 /* ----------- Trier A Ascendent De Chiffres ----------- */
 void AscendentChiffres(){
-    compt temporaire[30];
+    compt temporaire[100];
     int i,j=0;
-    int chiffres;
+    int chiffres, cased = 0;
+    system("cls");
     printf("\t\tEntrez Un Montant Pour Vous Montrer Les Plus Gros Comptes Bancaires : ");
     scanf("%d", &chiffres);
 
@@ -309,13 +332,16 @@ void AscendentChiffres(){
       }
     }
     compt temp;
-    for(i = 0; i < cased; i++)
-      for(j = 0; j < cased-1; j++)
+    for(i = 0; i < cased; i++){
+      for(j = 0; j < cased-1; j++){
         if(temporaire[i].montant < temporaire[j].montant){
           temp = temporaire[i];
           temporaire[i] = temporaire[j];
           temporaire[j]= temp;
           }
+      }
+
+    }
     
       for(i = 0; i < cased; i++){
           printf("\n\t\t\t============ #Compt Numero %d # ===========\n\n", i+1);
@@ -329,9 +355,10 @@ void AscendentChiffres(){
 /* ----------- Trier A Descendant De Chiffres ----------- */
 
 void DescendantChiffres(){
-    compt temporaire[30];
+    compt temporaire[100];
     int i,j=0;
-    int chiffres;
+    int chiffres, cased= 0;
+    system("cls");
     printf("Entrez Un Montant Pour Vous Montrer Les Plus Gros Comptes Bancaires : ");
     scanf("%d", &chiffres);
 
@@ -342,13 +369,16 @@ void DescendantChiffres(){
       }
     }
     compt temp;
-    for(i = 0; i < cased; i++)
-      for(j = 0; j < cased-1; j++)
+    for(i = 0; i < cased; i++){
+      for(j = 0; j < cased-1; j++){
         if(temporaire[i].montant > temporaire[j].montant){
           temp = temporaire[i];
           temporaire[i] = temporaire[j];
           temporaire[j]= temp;
-          }
+        }
+      }
+
+    }
     
       for(i = 0; i < cased; i++){
           printf("\n\t\t\t============ #Compt Numero %d # ===========\n\n", i+1);
@@ -363,7 +393,7 @@ void DescendantChiffres(){
 
 
 /* ----------- Fedilisation ----------- */
-void fedilisation(compt client[], int nombres){
+void fedilisation(){
   compt temporaire;
     int i, j;
       for(i = 0; i < nombres; i++){
@@ -373,11 +403,11 @@ void fedilisation(compt client[], int nombres){
             client[i] = client[j];
             client[j]= temporaire;
           }
-        }
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
       }
       for(i = 0; i < 3; i++){
-          client[i].montant = client[i].montant * 0.13;
+          client[i].montant = client[i].montant + (client[i].montant * 0.13);
           printf("\n\t\t\t============ #Compt Numero %d # ===========\n\n", i+1);
           printf("\t\t\t\t CIN : %s \n", client[i].cin);
           printf("\t\t\t\t Nom : %s \n", client[i].nom);
